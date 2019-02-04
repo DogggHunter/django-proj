@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Checkout example · Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</head>
+
+<body class="bg-light">
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>Testing</h2>
+        <p class="lead">Site for the formation and passage of testing</p>
+    </div>
+
+    <div class="row">
+    <div class="col-md-4 order-md-2 mb-4">
+      <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-muted">Search test</span>
+      </h4>
+      <form class="card p-2" method="post" action="{% url 'testingapp:find_tests' %}"> {% csrf_token %}
+          <div class="input-group">
+              <input type="text" class="form-control" name="find_text" placeholder="Test name or description">
+              <div class="input-group-append">
+                  <button type="submit" class="btn btn-secondary">Search</button>
+              </div>
+          </div>
+      </form>
+    </div>
+    <div class="col-md-8 order-md-1">
+        {% block content %}
+        {% endblock %}
+    </div>
+  </div>
+</div>
+</body>
+</html>
