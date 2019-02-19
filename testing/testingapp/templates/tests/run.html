@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="my-3 p-3 bg-white rounded shadow-sm">
+        <h6 class="border-bottom border-gray pb-2 mb-0">{{ test }} Run</h6>
+        <div class="media text-muted pt-3">
+            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">{{ test.description }}</p>
+        </div>
+        <small class="d-block text-right mt-3"></small>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3 custom_form">
+                {% for question in test.questions.all %}
+                    <p>{{ question }}</p>
+                    <input type="text" class="form-control" name="answers" required>
+                    <input type="hidden" value="{{ question.id }}" name="questions_id">
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-secondary">End Test</button><br>
+        </form>
+    </div>
+{% endblock %}

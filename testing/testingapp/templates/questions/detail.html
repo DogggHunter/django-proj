@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="my-3 p-3 bg-white rounded shadow-sm">
+        <h6 class="border-bottom border-gray pb-2 mb-0">Question number: {{ question.id }}</h6>
+        <div class="media text-muted pt-3">
+            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">{{ question }}</p>
+        </div>
+        <small class="d-block text-right mt-3"></small>
+        <div class="d-flex">
+            <form method="get" action="{% url 'testing_app:question_update' question.id %}">
+                <button type="submit" class="btn btn-secondary">Edit</button>
+            </form>
+            <form class="ml-2" method="get" action="{% url 'testing_app:question_delete' question.id %}">
+                <button type="submit" class="btn btn-secondary">Delete</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

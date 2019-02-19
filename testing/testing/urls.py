@@ -15,10 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
 from testingapp.views import IndexListView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexListView.as_view(), name='index'),
-    path('tests/', include('testingapp.urls')),
+    path('testing/', include('testingapp.urls')),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

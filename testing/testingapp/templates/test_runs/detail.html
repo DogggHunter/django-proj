@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="my-3 p-3 bg-white rounded shadow-sm">
+        <h6 class="border-bottom border-gray pb-2 mb-0">Test Run for {{ test_run.test.name }}</h6>
+        {% for question in questions %}
+            <div class="media text-muted pt-3">
+                <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">{{ question.question }}<br>{{ question.answer }}</p>
+            </div>
+        {% endfor %}
+        <small class="d-block text-right mt-3"></small>
+    </div>
+{% endblock %}
