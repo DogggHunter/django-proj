@@ -8,11 +8,11 @@
         <small class="d-block text-right mt-3"></small>
         <form method="post">
             {% csrf_token %}
+            {{ management_form }}
             <div class="mb-3 custom_form">
-                {% for question in test.questions.all %}
-                    <p>{{ question }}</p>
-                    <input type="text" class="form-control" name="answers" required>
-                    <input type="hidden" value="{{ question.id }}" name="questions_id">
+                {% for q, form in formset.items %}
+                    <p>{{ q }}</p>
+                    {{ form.answer }}
                 {% endfor %}
             </div>
             <button type="submit" class="btn btn-secondary">End Test</button><br>

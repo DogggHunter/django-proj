@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'testingapp',
+
     'debug_toolbar',
 ]
 
@@ -124,3 +126,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 INTERNAL_IPS = ('127.0.0.1',)
+
+try:
+    from .local_settings import *
+except ImportError as e:
+    print(e)

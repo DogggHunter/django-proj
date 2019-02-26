@@ -4,7 +4,9 @@ from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Test, Question, TestRun, TestRunAnswers
-from django.shortcuts import get_object_or_404
+from .mixins import NoteViewMixin
+from .forms import TestRunAnswersForm
+from django.forms import formset_factory
 
 
 class IndexListView(ListView):
@@ -19,7 +21,7 @@ class IndexListView(ListView):
         return render(request, self.template_name, context={'tests': tests, 'searched_word': searched_word})
 
 
-class TestDetailView(DetailView):
+class TestDetailView(NoteViewMixin):
     model = Test
     context_object_name = 'test'
     template_name = 'tests/detail.html'
@@ -82,19 +84,28 @@ class TestPassageDetailView(DetailView):
     context_object_name = 'test'
     template_name = 'tests/run.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        questions = self.get_object().questions.all()
+        formset = formset_factory(TestRunAnswersForm, min_num=questions.count())()
+        context['formset'] = dict(zip(questions, formset))
+        context['management_form'] = formset.management_form
+        return context
+
     def post(self, request, *args, **kwargs):
-        answers = dict(zip(request.POST.getlist('questions_id'), request.POST.getlist('answers')))
-        test_run = TestRun(test=self.get_object())
-        test_run.save()
-        for question_id, answer in answers.items():
-            question = get_object_or_404(Question, pk=question_id)
-            TestRunAnswers(test_run=test_run,
-                           question=question,
-                           answer=answer).save()
+        questions = self.get_object().questions.all()
+        formset = formset_factory(TestRunAnswersForm, min_num=questions.count())(request.POST)
+        if formset.is_valid():
+            answers = dict(zip(questions, formset.cleaned_data))
+            test_run = TestRun.objects.create(test=self.get_object())
+            for question, answer in answers.items():
+                TestRunAnswers.objects.create(test_run=test_run,
+                                              question=question,
+                                              answer=answer['answer'])
         return redirect(reverse('testing_app:testruns'))
 
 
-class TestRunDetailView(DetailView):
+class TestRunDetailView(NoteViewMixin):
     model = TestRun
     context_object_name = 'test_run'
     template_name = 'test_runs/detail.html'
@@ -112,3 +123,4 @@ class TestRunsListView(ListView):
 
     def get_queryset(self):
         return self.model.objects.select_related('test').all().order_by('-created_on')
+

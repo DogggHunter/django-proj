@@ -3,7 +3,7 @@
     <div class="my-3 p-3 bg-white rounded shadow-sm">
         <h6 class="border-bottom border-gray pb-2 mb-0">{{ test }}</h6>
         <div class="media text-muted pt-3">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">{{ test.description }}</p>
+            <p class="media-body pb-3 mb-0 small lh-125 border-gray">{{ test.description }}</p>
         </div>
         <small class="d-block text-right mt-3"></small>
         <div class="d-flex">
@@ -16,6 +16,27 @@
             <form class="ml-2" method="get" action="{% url 'testing_app:test_run' test.id %}">
                 <button type="submit" class="btn btn-secondary">Run test</button>
             </form>
+            <button class="ml-2 btn btn-secondary show-note-form">Add Note</button>
         </div>
     </div>
+    <div class="my-3 p-3 bg-white rounded shadow-sm note-form note-form-active">
+        <h6 class=" border-gray pb-2 mb-0">Add Note</h6>
+            <form method="post">
+                {% csrf_token %}
+                <input class="form-control" type="text" name="description" required>
+                <button type="submit" class="mt-2 btn btn-primary btn-lg btn-block">Save</button>
+            </form>
+        <small class="d-block text-right mt-3"></small>
+    </div>
+    {% if test.notes.count %}
+        <div class="my-3 p-3 bg-white rounded shadow-sm">
+          <h6 class="border-bottom border-gray pb-2 mb-0">Notes</h6>
+          {% for note in notes %}
+                <div class="media text-muted pt-3">
+                   <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">{{ note }}</p>
+                </div>
+         {% endfor %}
+          <small class="d-block text-right mt-3"></small>
+     </div>
+    {% endif %}
 {% endblock %}
