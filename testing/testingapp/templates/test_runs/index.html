@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-    {% for test_run in test_runs %}
-        <div class="my-3 p-3 bg-white rounded shadow-sm">
-            <h6 class="border-bottom border-gray pb-2 mb-0"><a href="{% url 'testing_app:testrun' test_run.id %}">{{ test_run.test.name }}</a></h6>
-            <small class="d-block text-right mt-3"></small>
-            <p class="media-body pb-3 mb-0 small lh-125 text-muted">{{ test_run.created_on }}</p>
-        </div>
-    {% endfor %}
+    {% if test_runs.count %}
+        {% for test_run in test_runs %}
+            <div class="my-3 p-3 bg-white rounded shadow-sm">
+                <h6 class="border-bottom border-gray pb-2 mb-0"><a href="{% url 'testing_app:testrun' test_run.id %}">{{ test_run.test.name }}</a></h6>
+                <small class="d-block text-right mt-3"></small>
+                <p class="media-body pb-3 mb-0 small lh-125 text-muted">{{ test_run.created_on }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You don't have no one passage of test.</p>
+    {% endif %}
 {% endblock %}

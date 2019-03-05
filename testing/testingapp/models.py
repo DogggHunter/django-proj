@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.auth.models import User
 
 
 class Test(models.Model):
@@ -9,6 +10,7 @@ class Test(models.Model):
     description = models.TextField()
     questions = models.ManyToManyField('Question')
     notes = GenericRelation('NoteItem')
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.name
@@ -26,6 +28,7 @@ class TestRun(models.Model):
     questions = models.ManyToManyField(Question, through='TestRunAnswers', through_fields=('test_run', 'question'))
     created_on = models.DateTimeField(auto_now_add=True, null=True)
     notes = GenericRelation('NoteItem')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = 'testrun'

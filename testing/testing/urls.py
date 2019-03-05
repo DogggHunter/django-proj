@@ -17,12 +17,17 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from testingapp.views import IndexListView
+from django.contrib.auth import views as auth_views
+from testingapp.views import SignUpView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexListView.as_view(), name='index'),
     path('testing/', include('testingapp.urls')),
+    path('accounts/login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('signup/', SignUpView.as_view(), name='signup')
 ]
 
 if settings.DEBUG:

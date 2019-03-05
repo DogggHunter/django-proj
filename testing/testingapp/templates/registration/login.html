@@ -1,0 +1,28 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Sign In</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'signin.css' %}" rel="stylesheet">
+</head>
+<body class="text-center">
+  <form class="form-signin" method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+      {% if form.errors %}
+          <p>Your username and password didn't match. Please try again.</p>
+      {% endif %}
+      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+      <input type="text" id="id_username" name="username" class="form-control" placeholder="Username" required autofocus>
+      <input type="password" id="id_password" name="password" class="form-control" placeholder="Password" required>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      <input type="hidden" name="next" value="{{ next }}">
+  </form>
+</body>
+</html>
